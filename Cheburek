@@ -1,0 +1,47 @@
+local offsetWhileNoSound = 10
+local soundName = "Sound"
+local soundvis = true
+local soundRemoved = false
+local musicIsOff = false
+local shortWaitTime = 0.1
+local longWaitTime = 10
+local lastOffsetSent = nil
+
+game:GetService("RunService").Heartbeat:Connect(function()
+    local soundFolder = game:GetService("Workspace").Terrain["_Game"].Folder
+    local sound = soundFolder:FindFirstChild(soundName)
+    
+    if sound then
+        soundRemoved = false
+        local soundPlayback = sound.PlaybackLoudness
+        
+        if soundPlayback == 0 and not musicIsOff then
+            local adjustedOffset = offsetWhileNoSound
+            if adjustedOffset ~= lastOffsetSent then
+                game.Players:Chat("-offset " .. adjustedOffset)
+                musicIsOff = true
+                lastOffsetSent = adjustedOffset
+            end
+            wait(shortWaitTime)
+        elseif soundPlayback > 0 then
+            musicIsOff = false
+            local adjustedOffset = math.floor(soundPlayback / 25)
+            if adjustedOffset ~= lastOffsetSent then
+                game.Players:Chat("-offset " .. adjustedOffset)
+                lastOffsetSent = adjustedOffset
+            end
+            wait(shortWaitTime)
+        end
+    elseif not soundRemoved then
+        if not musicIsOff then
+            local adjustedOffset = offsetWhileNoSound
+            if adjustedOffset ~= lastOffsetSent then
+                game.Players:Chat("-offset " .. adjustedOffset)
+                musicIsOff = true
+                soundRemoved = true
+                lastOffsetSent = adjustedOffset
+            end
+            wait(longWaitTime)
+        end
+    end
+end)
