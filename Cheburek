@@ -1,4 +1,5 @@
 local offsetWhileNoSound = 10
+local minimumOffset = 7
 local soundName = "Sound"
 local soundvis = true
 local soundRemoved = false
@@ -16,7 +17,7 @@ game:GetService("RunService").Heartbeat:Connect(function()
         local soundPlayback = sound.PlaybackLoudness
         
         if soundPlayback == 0 and not musicIsOff then
-            local adjustedOffset = offsetWhileNoSound
+            local adjustedOffset = math.max(offsetWhileNoSound, minimumOffset)
             if adjustedOffset ~= lastOffsetSent then
                 game.Players:Chat("-offset " .. adjustedOffset)
                 musicIsOff = true
@@ -26,6 +27,7 @@ game:GetService("RunService").Heartbeat:Connect(function()
         elseif soundPlayback > 0 then
             musicIsOff = false
             local adjustedOffset = math.floor(soundPlayback / 25)
+            adjustedOffset = math.max(adjustedOffset, minimumOffset)
             if adjustedOffset ~= lastOffsetSent then
                 game.Players:Chat("-offset " .. adjustedOffset)
                 lastOffsetSent = adjustedOffset
@@ -34,7 +36,7 @@ game:GetService("RunService").Heartbeat:Connect(function()
         end
     elseif not soundRemoved then
         if not musicIsOff then
-            local adjustedOffset = offsetWhileNoSound
+            local adjustedOffset = math.max(offsetWhileNoSound, minimumOffset)
             if adjustedOffset ~= lastOffsetSent then
                 game.Players:Chat("-offset " .. adjustedOffset)
                 musicIsOff = true
