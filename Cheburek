@@ -1,5 +1,5 @@
-local offsetWhileNoSound = 7.5
-local minimumOffset = 7.5
+local offsetWhileNoSound = 8
+local minimumOffset = 6
 local soundName = "Sound"
 local soundvis = true
 local soundRemoved = false
