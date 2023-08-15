@@ -26,7 +26,7 @@ game:GetService("RunService").Heartbeat:Connect(function()
             wait(shortWaitTime)
         elseif soundPlayback > 0 then
             musicIsOff = false
-            local adjustedOffset = math.floor(soundPlayback / 25)
+            local adjustedOffset = math.floor(soundPlayback / 33)
             adjustedOffset = math.max(adjustedOffset, minimumOffset)
             if adjustedOffset ~= lastOffsetSent then
                 game.Players:Chat("-offset " .. adjustedOffset)
